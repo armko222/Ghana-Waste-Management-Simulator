@@ -34,7 +34,7 @@ class RequestIndexTest {
 
     private static ServiceRequest requestDueAt(String id, LocalDateTime deadline) {
         return new ServiceRequest(
-                id, "L001", "L002", "Medical", 3,
+                id, "L001", "L002", "General", 3,
                 ServiceRequest.Priority.MEDIUM,
                 deadline.minusHours(1), deadline);
     }
@@ -118,7 +118,7 @@ class RequestIndexTest {
     @DisplayName("ServiceRequest rejects an urgency outside 1-5")
     void rejectsOutOfRangeUrgency() {
         assertThrows(IllegalArgumentException.class, () -> new ServiceRequest(
-                "Q001", "L001", "L002", "Medical", 6,
+                "Q001", "L001", "L002", "Hazardous", 6,
                 ServiceRequest.Priority.HIGH, NINE_AM.minusHours(1), NINE_AM));
     }
 }
