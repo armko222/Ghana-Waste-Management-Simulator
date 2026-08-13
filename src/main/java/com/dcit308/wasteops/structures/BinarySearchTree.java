@@ -26,6 +26,19 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements SearchTreeA
         }
     }
 
+    /**
+     * DUPLICATE-KEY POLICY: inserting a key that is already present
+     * overwrites that node's value and leaves size() unchanged — the tree
+     * never holds two nodes for the same key, so no duplicate branch is
+     * created and the shape of the tree does not change.
+     *
+     * Chosen over the alternatives (rejecting the insert, or storing
+     * duplicates in a right subtree) because this tree backs
+     * indexing/RequestIndex.java, which relies on being able to read a
+     * key's current value, mutate it, and have the tree keep serving that
+     * same object. Callers needing to keep every value for a key should
+     * do what RequestIndex does: use a collection as V.
+     */
     @Override
     public void insert(K key, V value) {
         root = insertRecord(root, key, value);
