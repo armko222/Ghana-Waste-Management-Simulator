@@ -1,0 +1,25 @@
+# Build output
+target/
+*.class
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# Database (generated locally — schema.sql recreates it; don't commit data)
+*.db
+*.sqlite
+*.sqlite3
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated performance results (regenerate via the experiment harness;
+# commit only the final curated results before submission, not every local run)
+results/*.csv
+!results/.gitkeep

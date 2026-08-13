@@ -1,0 +1,26 @@
+package com.dcit308.wasteops.db;
+
+import com.dcit308.wasteops.domain.Road;
+import java.util.List;
+
+/**
+ * Basic CRUD + bulk load for the road table. Ordinary
+ * Java/JDBC tools are fine to use here (brief Section 8.ii exempts db/
+ * from the no-built-ins rule).
+ *
+ * Owned by Issue #1.
+ */
+public class RoadRepository {
+
+    public void save(Road item) {
+        throw new UnsupportedOperationException("TODO: Issue #1 \u2014 implement save.");
+    }
+
+    public Road findById(String id) {
+        throw new UnsupportedOperationException("TODO: Issue #1 \u2014 implement findById.");
+    }
+
+    public List<Road> findAll() {
+        throw new UnsupportedOperationException("TODO: Issue #1 \u2014 implement findAll.");
+    }
+}

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.dcit308</groupId>
+    <artifactId>waste-ops-optimizer</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>Ghana Waste Management Operations Optimizer</name>
+    <description>
+        DCIT 204/308 Joint Semester Project. See README.md and docs/
+        for full project documentation. Database: SQLite (see
+        docs/DECISION_LOG.md, Decision D5, for why).
+    </description>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.version>5.10.2</junit.version>
+        <sqlite.version>3.45.3.0</sqlite.version>
+        <!-- JFreeChart is optional — only needed once ExperimentService (issue #13)
+             starts plotting performance graphs. CSV export alone (for Excel/Python
+             plotting) needs no extra dependency. Keep this if the team wants
+             in-app graph generation; remove if plotting externally. -->
+        <jfreechart.version>1.5.4</jfreechart.version>
+    </properties>
+
+    <dependencies>
+        <!-- Database: SQLite JDBC driver -->
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>${sqlite.version}</version>
+        </dependency>
+
+        <!-- Testing: required for the >=40 unit tests (brief Section 10) -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Optional: in-app performance graph plotting (issue #13).
+             Comment out if the team plots externally (Excel/Python) instead,
+             per brief Section 9.iii which allows either. -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>${jfreechart.version}</version>
+        </dependency>
+
+        <!-- Uncomment if/when the JavaFX stretch-goal GUI (issue #13, ui/gui/)
+             is started. Left commented so the console-first build stays
+             lightweight per docs/DECISION_LOG.md Decision D6.
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>21.0.2</version>
+        </dependency>
+        -->
+    </dependencies>
+
+    <build>
+        <finalName>waste-ops-optimizer</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+
+            <!-- Allows `mvn exec:java` to run Main.java directly (see
+                 docs/DEVELOPMENT_WORKFLOW.md "Running the project") -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <mainClass>com.dcit308.wasteops.Main</mainClass>
+                </configuration>
+            </plugin>
+
+            <!-- Builds a single runnable jar with all dependencies included,
+                 useful for the submission ZIP (brief Section 12) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>4.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>shade</goal></goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.dcit308.wasteops.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
