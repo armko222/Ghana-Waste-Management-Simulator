@@ -1,12 +1,19 @@
 package com.dcit308.wasteops;
 
+import com.dcit308.wasteops.db.DatabaseManager;
+import com.dcit308.wasteops.ui.console.ConsoleMenu;
+
 /**
- * Entry point. Currently a placeholder — Issue #14 wires this to
- * db.DatabaseManager and ui.console.ConsoleMenu once those exist.
+ * Application entry point.
  *
- * See README.md for the intended startup sequence:
- *   1. DatabaseManager initializes schema (data/sql/schema.sql) if needed
- *   2. ConsoleMenu is launched, offering "Import Data" as its first option
+ * <p>Startup sequence:
+ * <ol>
+ *   <li>Open the SQLite connection via {@link DatabaseManager#connect()}</li>
+ *   <li>Apply schema if the database is new via {@link DatabaseManager#initSchemaIfNeeded()}</li>
+ *   <li>Hand off to the interactive console menu</li>
+ * </ol>
+ *
+ * Owned by Issue #14.
  */
 public class Main {
 
@@ -14,10 +21,21 @@ public class Main {
         System.out.println("Ghana Waste Management Operations Optimizer");
         System.out.println("============================================");
         System.out.println();
-        System.out.println("TODO (Issue #14): wire this to:");
-        System.out.println("  1. db.DatabaseManager.connect() / initSchemaIfNeeded()");
-        System.out.println("  2. ui.console.ConsoleMenu.run()");
-        System.out.println();
-        System.out.println("See README.md for the full startup sequence.");
+
+        DatabaseManager db = new DatabaseManager();
+        try {
+            db.connect();
+            db.initSchemaIfNeeded();
+            System.out.println("[OK] Database ready.");
+            System.out.println();
+
+            new ConsoleMenu(db).run();
+
+        } catch (RuntimeException e) {
+            System.err.println("[ERROR] Startup failed: " + e.getMessage());
+            System.exit(1);
+        } finally {
+            db.close();
+        }
     }
 }
