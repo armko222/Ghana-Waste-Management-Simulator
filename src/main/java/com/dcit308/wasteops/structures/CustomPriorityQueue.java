@@ -1,15 +1,11 @@
 package com.dcit308.wasteops.structures;
 
-/**
- * Thin wrapper exposing BinaryHeap through the PriorityQueueADT contract
- * that Issue #12 (Dijkstra) and Issue #13 (priority dispatch) build
- * against.
- *
- * Owned by Issue #5.
- */
 public class CustomPriorityQueue<T> implements PriorityQueueADT<T> {
+    private final BinaryHeap<T> heap;
 
-    private final BinaryHeap<T> heap = new BinaryHeap<>();
+    public CustomPriorityQueue() {
+        this.heap = new BinaryHeap<>();
+    }
 
     @Override
     public void insert(int priority, T value) {
