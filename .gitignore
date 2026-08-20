@@ -33,3 +33,4 @@ Thumbs.db
 # commit only the final curated results before submission, not every local run)
 results/*.csv
 !results/.gitkeep
+.vs/
