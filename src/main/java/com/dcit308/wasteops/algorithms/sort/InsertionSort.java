@@ -11,6 +11,15 @@ public class InsertionSort<T extends Comparable<T>> implements SortAlgorithm<T> 
 
     @Override
     public void sort(T[] array) {
-        throw new UnsupportedOperationException("TODO: Issue #6 \u2014 implement InsertionSort, in place, ascending order.");
+        for (int i = 1; i < array.length; i++) {
+            T key = array[i];
+            int j = i - 1;
+
+            while (j >= 0 && array[j].compareTo(key) > 0) {
+                array[j + 1] = array[j];
+                j--;
+            }
+            array[j + 1] = key;
+        }
     }
 }

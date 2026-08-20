@@ -85,7 +85,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.6.2</version>
                 <configuration>
                     <mainClass>com.dcit308.wasteops.Main</mainClass>
                 </configuration>
@@ -96,7 +96,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+<<<<<<< HEAD
                 <version>3.5.1</version>
+=======
+                <version>3.6.2</version>
+>>>>>>> 1abe092a75c9ece96705ed6198bf8378cae4e785
                 <executions>
                     <execution>
                         <phase>package</phase>
