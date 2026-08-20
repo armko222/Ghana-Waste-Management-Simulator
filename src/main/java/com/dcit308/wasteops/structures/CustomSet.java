@@ -1,30 +1,34 @@
 package com.dcit308.wasteops.structures;
 
 /**
- * Set built on top of CustomHashTable (or another permitted custom
- * structure).
- *
- * Owned by Issue #9.
+ * Set implemented on top of the custom hash table. Each distinct value is
+ * stored as a key and maps to one shared marker object.
  */
 public class CustomSet<T> {
+    private static final Object PRESENT = new Object();
+    private final CustomHashTable<T, Object> table;
+
+    public CustomSet() {
+        table = new CustomHashTable<>();
+    }
 
     public void add(T value) {
-        throw new UnsupportedOperationException("TODO: Issue #9 \u2014 implement add.");
+        table.put(value, PRESENT);
     }
 
     public boolean contains(T value) {
-        throw new UnsupportedOperationException("TODO: Issue #9 \u2014 implement contains.");
+        return table.containsKey(value);
     }
 
     public void remove(T value) {
-        throw new UnsupportedOperationException("TODO: Issue #9 \u2014 implement remove.");
+        table.remove(value);
     }
 
     public int size() {
-        throw new UnsupportedOperationException("TODO: Issue #9 \u2014 implement size.");
+        return table.size();
     }
 
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("TODO: Issue #9 \u2014 implement isEmpty.");
+        return table.isEmpty();
     }
 }

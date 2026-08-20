@@ -1,41 +1,40 @@
 package com.dcit308.wasteops.structures;
 
-/**
- * Map built on top of CustomHashTable (or another permitted custom
- * structure). Implements MapLookupADT for consistency with
- * CustomHashTable.
- *
- * Owned by Issue #9.
- */
+/** Map abstraction built directly on the Role 9 custom hash table. */
 public class CustomMap<K, V> implements MapLookupADT<K, V> {
+    private final CustomHashTable<K, V> table;
+
+    public CustomMap() {
+        table = new CustomHashTable<>();
+    }
 
     @Override
     public void put(K key, V value) {
-        throw new UnsupportedOperationException("TODO: Issue #9 \u2014 implement put.");
+        table.put(key, value);
     }
 
     @Override
     public V get(K key) {
-        throw new UnsupportedOperationException("TODO: Issue #9 \u2014 implement get.");
+        return table.get(key);
     }
 
     @Override
     public void remove(K key) {
-        throw new UnsupportedOperationException("TODO: Issue #9 \u2014 implement remove.");
+        table.remove(key);
     }
 
     @Override
     public boolean containsKey(K key) {
-        throw new UnsupportedOperationException("TODO: Issue #9 \u2014 implement containsKey.");
+        return table.containsKey(key);
     }
 
     @Override
     public int size() {
-        throw new UnsupportedOperationException("TODO: Issue #9 \u2014 implement size.");
+        return table.size();
     }
 
     @Override
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("TODO: Issue #9 \u2014 implement isEmpty.");
+        return table.isEmpty();
     }
 }
