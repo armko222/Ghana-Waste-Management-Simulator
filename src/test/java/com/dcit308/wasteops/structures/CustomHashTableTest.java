@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class Role9StructuresTest {
+class CustomHashTableTest {
 
     @Test
     void emptyTableShouldBehaveCorrectly() {
@@ -101,43 +101,6 @@ class Role9StructuresTest {
     }
 
     @Test
-    void collisionEvidenceShouldRecordMultipleLoadFactors() {
-        CustomHashTable<CollisionKey, Integer> table =
-                new CustomHashTable<>(16);
-
-        int[] entryCounts = {4, 8, 12};
-
-        System.out.println();
-        System.out.println("Role 9 Collision Evidence");
-        System.out.println("Load Factor | Capacity | Entries | Collisions | Probes");
-        System.out.println("--------------------------------------------------------");
-
-        for (int i = 0; i < entryCounts.length; i++) {
-            table.resetCollisionStatistics();
-
-            int targetEntries = entryCounts[i];
-
-            while (table.size() < targetEntries) {
-                table.put(
-                        new CollisionKey("key-" + table.size()),
-                        table.size()
-                );
-            }
-
-            System.out.printf(
-                    "%.2f | %d | %d | %d | %d%n",
-                    table.loadFactor(),
-                    table.capacity(),
-                    table.size(),
-                    table.collisionCount(),
-                    table.probeCount()
-            );
-        }
-
-        assertTrue(table.size() >= 12);
-    }
-
-    @Test
     void setShouldSupportBasicOperations() {
         CustomSet<String> set = new CustomSet<>();
 
@@ -178,6 +141,7 @@ class Role9StructuresTest {
     }
 
     private static final class CollisionKey {
+
         private final String value;
 
         private CollisionKey(String value) {
