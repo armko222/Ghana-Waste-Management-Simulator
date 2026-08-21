@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS service_requests (
     destination_location_id TEXT NOT NULL REFERENCES locations(location_id),
     category                TEXT NOT NULL,
     urgency                 INTEGER NOT NULL CHECK (urgency BETWEEN 1 AND 5),
-    priority                TEXT NOT NULL CHECK (priority IN ('High','Medium','Low')),
+    priority                TEXT NOT NULL CHECK (priority IN ('HIGH','MEDIUM','LOW')),
     time_submitted           TEXT NOT NULL,   -- ISO 8601
     deadline                 TEXT NOT NULL,   -- ISO 8601
     status                   TEXT NOT NULL DEFAULT 'NEW'
