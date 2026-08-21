@@ -4,8 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -17,6 +15,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * package-private members stay reachable if later tests need them.
  */
 class BinarySearchTreeTest {
+
+    /**
+     * Asserts a traversal's contents element by element. DynamicArray
+     * does not override equals(), so a whole-collection assertEquals
+     * against List.of(...) would compare references and always fail.
+     */
+    @SafeVarargs
+    private static <T> void assertInOrder(DynamicArray<T> actual, String message, T... expected) {
+        assertEquals(expected.length, actual.size(), message);
+        for (int i = 0; i < expected.length; i++) {
+            assertEquals(expected[i], actual.get(i), message);
+        }
+    }
 
     @Nested
     @DisplayName("Empty tree")
@@ -123,7 +134,7 @@ class BinarySearchTreeTest {
             tree.insert(10, "second");
 
             assertEquals(heightBefore, tree.height(), "re-inserting a key must not deepen the tree");
-            assertEquals(List.of("second"), tree.inorderTraversal(), "the key appears exactly once");
+            assertInOrder(tree.inorderTraversal(), "the key appears exactly once", "second");
         }
     }
 
@@ -144,10 +155,10 @@ class BinarySearchTreeTest {
             tree.insert(60, "sixty");
             tree.insert(80, "eighty");
 
-            assertEquals(
-                    List.of("twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty"),
+            assertInOrder(
                     tree.inorderTraversal(),
-                    "inorder traversal of a BST is the sorted sequence — Section 6 evidence");
+                    "inorder traversal of a BST is the sorted sequence — Section 6 evidence",
+                    "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty");
         }
 
         @Test
@@ -158,8 +169,9 @@ class BinarySearchTreeTest {
             tree.insert("2026-07-01T09:00", "Q001");
             tree.insert("2026-07-01T14:15", "Q003");
 
-            assertEquals(List.of("Q001", "Q002", "Q003"), tree.inorderTraversal(),
-                    "ISO-8601 sorts correctly as plain text, which is why RequestIndex keys on it");
+            assertInOrder(tree.inorderTraversal(),
+                    "ISO-8601 sorts correctly as plain text, which is why RequestIndex keys on it",
+                    "Q001", "Q002", "Q003");
         }
     }
 

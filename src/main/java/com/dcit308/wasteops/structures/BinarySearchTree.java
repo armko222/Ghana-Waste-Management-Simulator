@@ -1,8 +1,5 @@
 package com.dcit308.wasteops.structures;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Plain (unbalanced) binary search tree. Backs indexing/RequestIndex.java.
  * Implements SearchTreeADT so Issue #7 and Issue #14 can compare it
@@ -88,17 +85,22 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements SearchTreeA
         return size;
     }
 
-    /** Returns all values in ascending key order -- required evidence (Section 6). */
-    public List<V> inorderTraversal() {
-        List<V> result = new ArrayList<>();
+    /**
+     * Returns all values in ascending key order -- required evidence
+     * (Section 6). Collected into Issue #1's DynamicArray rather than a
+     * java.util.List, for the same reason RequestIndex buckets are:
+     * the system runs on the team's own structures.
+     */
+    public DynamicArray<V> inorderTraversal() {
+        DynamicArray<V> result = new DynamicArray<>();
         inorderRecord(root, result);
         return result;
     }
 
-    private void inorderRecord(Node node, List<V> result) {
+    private void inorderRecord(Node node, DynamicArray<V> result) {
         if (node == null) return;
         inorderRecord(node.left, result);
-        result.add(node.value);
+        result.insert(result.size(), node.value);
         inorderRecord(node.right, result);
     }
 }

@@ -130,19 +130,47 @@ serve that same object.
 Callers that need to keep every value for a key do what `RequestIndex`
 does — use a collection as the value type. Several service requests can
 share one deadline (nothing in `data/sql/schema.sql` forbids it), so the
-index maps each deadline to the *list* of requests due at it.
+index maps each deadline to the *bucket* of requests due at it.
+
+That bucket is Issue #1's `DynamicArray`, not `java.util.ArrayList`: the
+brief asks the system to run on the team's own structures, and this index
+is the one place Issue #6 needs a growable collection. `DynamicArray` has
+no append method, so `indexByDeadline` appends with
+`bucket.insert(bucket.size(), request)`, and no unmodifiable wrapper, so
+`findByDeadline` returns a copy of the bucket rather than a read-only
+view of it.
 
 ---
 
 ## 4. Tests
 
-`mvn test` — 29 tests, 0 failures.
+`mvn test` — 29 tests, 18 passing, 11 errored.
 
-| Test class | Tests |
-|---|---|
-| `BinarySearchTreeTest` | 12 |
-| `InsertionSortTest` | 9 |
-| `RequestIndexTest` | 8 |
+| Test class | Tests | Status |
+|---|---|---|
+| `BinarySearchTreeTest` | 12 | 8 passing, 4 blocked on Issue #1 |
+| `InsertionSortTest` | 9 | all passing |
+| `RequestIndexTest` | 8 | 1 passing, 7 blocked on Issue #1 |
 
 Covering the cases the issue asks for: empty tree, single node,
 duplicate-key policy, search of a present key and an absent key.
+
+### The 11 errors are Issue #1, not Issue #6
+
+Every test that touches a `DynamicArray` errors with
+`UnsupportedOperationException: TODO: Issue #1 — implement size` (or
+`isEmpty`). `structures/DynamicArray.java` is still the unimplemented
+stub on `main` — every method throws. Issue #6 is declared as depending
+on Issue #1, and this is that dependency coming due: the integration
+compiles and is correct, but it cannot run until Issue #1 lands.
+
+The blocked cases are exactly the ones that read a bucket or a traversal:
+all 7 `RequestIndexTest` cases that look a deadline up, and the 4
+`BinarySearchTreeTest` cases that call `inorderTraversal()`. Tree
+`insert`, `search`, `height`, and `size` are untouched by the refactor
+and still pass, which is what confirms the change is confined to
+collection storage.
+
+These tests are expected to go green with no change to Issue #6's code
+once `DynamicArray` has real `insert`, `get`, `size`, and `isEmpty`
+behaviour. Do not merge this branch ahead of Issue #1.

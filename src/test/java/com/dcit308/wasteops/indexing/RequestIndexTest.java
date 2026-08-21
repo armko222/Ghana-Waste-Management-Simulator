@@ -2,12 +2,12 @@ package com.dcit308.wasteops.indexing;
 
 import com.dcit308.wasteops.domain.ServiceRequest;
 import com.dcit308.wasteops.structures.BinarySearchTree;
+import com.dcit308.wasteops.structures.DynamicArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * The index keys on deadline and buckets every request sharing that
  * deadline, because nothing in the schema makes deadlines unique.
+ * Buckets are Issue #1's DynamicArray, so these tests exercise the
+ * integration between the two issues as well as the index itself.
  */
 class RequestIndexTest {
 
@@ -45,7 +47,7 @@ class RequestIndexTest {
         ServiceRequest request = requestDueAt("Q001", NINE_AM);
         index.indexByDeadline(request);
 
-        List<ServiceRequest> found = index.findByDeadline(NINE_AM.toString());
+        DynamicArray<ServiceRequest> found = index.findByDeadline(NINE_AM.toString());
 
         assertEquals(1, found.size());
         assertEquals("Q001", found.get(0).getRequestId());
@@ -58,11 +60,13 @@ class RequestIndexTest {
         index.indexByDeadline(requestDueAt("Q002", NINE_AM));
         index.indexByDeadline(requestDueAt("Q003", NINE_AM));
 
-        List<ServiceRequest> found = index.findByDeadline(NINE_AM.toString());
+        DynamicArray<ServiceRequest> found = index.findByDeadline(NINE_AM.toString());
 
-        assertEquals(List.of("Q001", "Q002", "Q003"),
-                found.stream().map(ServiceRequest::getRequestId).toList(),
+        assertEquals(3, found.size(),
                 "keying on deadline alone must not let a later request overwrite an earlier one");
+        assertEquals("Q001", found.get(0).getRequestId());
+        assertEquals("Q002", found.get(1).getRequestId());
+        assertEquals("Q003", found.get(2).getRequestId());
     }
 
     @Test
@@ -76,30 +80,31 @@ class RequestIndexTest {
     }
 
     @Test
-    @DisplayName("an absent deadline returns an empty list, never null")
-    void returnsEmptyListForAbsentDeadline() {
+    @DisplayName("an absent deadline returns an empty array, never null")
+    void returnsEmptyArrayForAbsentDeadline() {
         index.indexByDeadline(requestDueAt("Q001", NINE_AM));
 
-        List<ServiceRequest> found = index.findByDeadline("2026-12-25T00:00");
+        DynamicArray<ServiceRequest> found = index.findByDeadline("2026-12-25T00:00");
 
-        assertNotNull(found, "callers must be able to iterate without a null check");
+        assertNotNull(found, "callers must be able to read the result without a null check");
         assertTrue(found.isEmpty());
     }
 
     @Test
-    @DisplayName("an empty index returns an empty list")
-    void returnsEmptyListWhenNothingIndexed() {
+    @DisplayName("an empty index returns an empty array")
+    void returnsEmptyArrayWhenNothingIndexed() {
         assertTrue(index.findByDeadline(NINE_AM.toString()).isEmpty());
     }
 
     @Test
-    @DisplayName("the returned bucket cannot be mutated by callers")
-    void returnedBucketIsUnmodifiable() {
+    @DisplayName("the returned bucket is a copy, so callers cannot mutate the index")
+    void returnedBucketIsACopy() {
         index.indexByDeadline(requestDueAt("Q001", NINE_AM));
-        List<ServiceRequest> found = index.findByDeadline(NINE_AM.toString());
+        DynamicArray<ServiceRequest> found = index.findByDeadline(NINE_AM.toString());
 
-        assertThrows(UnsupportedOperationException.class,
-                () -> found.add(requestDueAt("Q999", NINE_AM)),
+        found.insert(found.size(), requestDueAt("Q999", NINE_AM));
+
+        assertEquals(1, index.findByDeadline(NINE_AM.toString()).size(),
                 "the index must not hand out a mutable view of its own storage");
     }
 
