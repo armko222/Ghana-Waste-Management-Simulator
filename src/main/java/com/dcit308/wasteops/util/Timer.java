@@ -1,20 +1,38 @@
 package com.dcit308.wasteops.util;
 
 /**
- * Timing utility for the performance harness (Issue #14's
- * ExperimentService). Wraps System.nanoTime() consistently so every
- * experiment measures the same way.
+ * Lightweight wall-clock timer for performance experiments.
+ * Wraps {@link System#nanoTime()} so every experiment measures consistently.
+ *
+ * <p>Usage:
+ * <pre>
+ *   Timer t = new Timer();
+ *   t.start();
+ *   // ... work ...
+ *   long ns = t.stop();
+ * </pre>
  *
  * Owned by Issue #14.
  */
 public class Timer {
 
+    private long startNanos;
+
+    /** Records the current time as the start of a measurement. */
     public void start() {
-        throw new UnsupportedOperationException("TODO: Issue #14 \u2014 implement start.");
+        startNanos = System.nanoTime();
     }
 
-    /** Returns elapsed nanoseconds since start() was called. */
+    /**
+     * Returns elapsed nanoseconds since {@link #start()} was called.
+     *
+     * @return elapsed time in nanoseconds
+     * @throws IllegalStateException if {@link #start()} was never called
+     */
     public long stop() {
-        throw new UnsupportedOperationException("TODO: Issue #14 \u2014 implement stop.");
+        if (startNanos == 0) {
+            throw new IllegalStateException("Timer.stop() called before start()");
+        }
+        return System.nanoTime() - startNanos;
     }
 }
