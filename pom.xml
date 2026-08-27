@@ -22,7 +22,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.10.2</junit.version>
         <sqlite.version>3.45.3.0</sqlite.version>
-
         <!-- JFreeChart is optional — only needed once ExperimentService (issue #13)
              starts plotting performance graphs. CSV export alone (for Excel/Python
              plotting) needs no extra dependency. Keep this if the team wants
@@ -68,7 +67,6 @@
 
     <build>
         <finalName>waste-ops-optimizer</finalName>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -82,7 +80,8 @@
                 <version>3.2.5</version>
             </plugin>
 
-            <!-- Allows `mvn exec:java` to run Main.java directly -->
+            <!-- Allows `mvn exec:java` to run Main.java directly (see
+                 docs/DEVELOPMENT_WORKFLOW.md "Running the project") -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -92,19 +91,16 @@
                 </configuration>
             </plugin>
 
-            <!-- Builds a single runnable jar with all dependencies included -->
+            <!-- Builds a single runnable jar with all dependencies included,
+                 useful for the submission ZIP (brief Section 12) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.2</version>
-
+                <version>4.0.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-
+                        <goals><goal>shade</goal></goals>
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">

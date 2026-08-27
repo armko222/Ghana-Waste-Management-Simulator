@@ -1,8 +1,9 @@
 package com.dcit308.wasteops.db;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -11,77 +12,169 @@ import java.sql.Statement;
 /**
  * Single point of entry for the SQLite database.
  *
- * <p>The database file is created automatically on first run in the working
- * directory ({@code waste_management.db}). The schema is applied once via
- * {@link #initSchemaIfNeeded()}; subsequent runs are no-ops because every
- * {@code CREATE} statement in schema.sql uses {@code IF NOT EXISTS}.
+ * <p>The database file is created automatically at
+ * {@code data/wasteops.db}. The schema is loaded from
+ * {@code data/sql/schema.sql}.
  *
- * <p>Ordinary JDBC is used here — the brief (Section 8.ii) explicitly exempts
- * the {@code db/} package from the no-built-ins rule.
- *
- * Owned by Issue #14.
+ * <p>Owned by Issue #1.
  */
 public class DatabaseManager {
 
-    private static final String DB_URL = "jdbc:sqlite:waste_management.db";
+    private static final String DB_URL =
+            "jdbc:sqlite:data/wasteops.db";
+
+    private static final Path SCHEMA_PATH =
+            Path.of("data", "sql", "schema.sql");
 
     private Connection connection;
 
     /**
-     * Opens (and if necessary creates) the SQLite database file.
-     *
-     * @return the active {@link Connection}
-     * @throws RuntimeException if the JDBC driver fails to connect
+     * Opens the database connection and initializes the schema.
      */
     public Connection connect() {
+
         try {
+
             if (connection == null || connection.isClosed()) {
+
                 connection = DriverManager.getConnection(DB_URL);
                 connection.setAutoCommit(true);
+
+                try (Statement statement =
+                             connection.createStatement()) {
+
+                    statement.execute(
+                            "PRAGMA foreign_keys = ON"
+                    );
+                }
+
+                initSchemaIfNeeded();
             }
+
             return connection;
+
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to open database: " + e.getMessage(), e);
+
+            throw new RuntimeException(
+                    "Failed to open database: " + e.getMessage(),
+                    e
+            );
         }
     }
 
     /**
-     * Runs {@code data/sql/schema.sql} against the open connection.
-     * Safe to call on every startup — all statements use {@code IF NOT EXISTS}.
-     *
-     * @throws RuntimeException if the schema file is missing or execution fails
+     * Loads and executes data/sql/schema.sql.
      */
     public void initSchemaIfNeeded() {
-        try (InputStream in = getClass().getResourceAsStream("/schema.sql")) {
-            if (in == null) {
-                throw new RuntimeException("schema.sql not found on classpath");
-            }
-            String sql = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-            try (Statement stmt = connect().createStatement()) {
-                for (String statement : sql.split(";")) {
-                    String trimmed = statement.strip();
-                    if (!trimmed.isEmpty() && !trimmed.startsWith("--")) {
-                        stmt.execute(trimmed);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Could not read schema file: " + e.getMessage(), e);
+
+        String schema = loadSchema();
+
+        try (Statement statement =
+                     connect().createStatement()) {
+
+            executeSchema(statement, schema);
+
         } catch (SQLException e) {
-            throw new RuntimeException("Schema initialisation failed: " + e.getMessage(), e);
+
+            throw new RuntimeException(
+                    "Schema initialisation failed: "
+                            + e.getMessage(),
+                    e
+            );
         }
     }
 
     /**
-     * Closes the database connection. Call on application shutdown.
+     * Reads the schema file from the project.
+     */
+    private String loadSchema() {
+
+        try {
+
+            if (!Files.exists(SCHEMA_PATH)) {
+
+                throw new IllegalStateException(
+                        "Could not find "
+                                + SCHEMA_PATH.toAbsolutePath()
+                                + " -- run the application from "
+                                + "the project root."
+                );
+            }
+
+            return Files.readString(
+                    SCHEMA_PATH,
+                    StandardCharsets.UTF_8
+            );
+
+        } catch (IOException e) {
+
+            throw new RuntimeException(
+                    "Failed to read schema file: "
+                            + e.getMessage(),
+                    e
+            );
+        }
+    }
+
+    /**
+     * Executes each SQL statement individually.
+     */
+    private void executeSchema(
+            Statement statement,
+            String schema
+    ) throws SQLException {
+
+        StringBuilder current =
+                new StringBuilder();
+
+        for (String line : schema.split("\\R")) {
+
+            String trimmed = line.trim();
+
+            if (trimmed.startsWith("--")
+                    || trimmed.isEmpty()) {
+                continue;
+            }
+
+            current.append(line).append('\n');
+
+            if (trimmed.endsWith(";")) {
+
+                statement.execute(
+                        current.toString().trim()
+                );
+
+                current.setLength(0);
+            }
+        }
+
+        String remaining =
+                current.toString().trim();
+
+        if (!remaining.isEmpty()) {
+            statement.execute(remaining);
+        }
+    }
+
+    /**
+     * Closes the database connection.
      */
     public void close() {
+
         try {
-            if (connection != null && !connection.isClosed()) {
+
+            if (connection != null
+                    && !connection.isClosed()) {
+
                 connection.close();
             }
+
         } catch (SQLException e) {
-            System.err.println("[WARN] Failed to close database connection: " + e.getMessage());
+
+            System.err.println(
+                    "[WARN] Failed to close database connection: "
+                            + e.getMessage()
+            );
         }
     }
 }

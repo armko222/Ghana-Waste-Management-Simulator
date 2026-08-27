@@ -1,0 +1,101 @@
+location_id,name,area,location_type,x_coord,y_coord
+L001,Balme Library,Legon,Library,5.650,-0.190
+L002,Computer Science Department,Legon,Academic,5.651,-0.188
+L003,UG Hospital,Legon,Health,5.655,-0.185
+L004,UG Main Gate,Legon,Entrance,5.649,-0.192
+L005,UG Business School,Legon,Academic,5.648,-0.187
+L006,UG Balme Hostel,Legon,Hostel,5.653,-0.193
+L007,Commonwealth Hall,Legon,Hostel,5.656,-0.191
+L008,Volta Hall,Legon,Hostel,5.647,-0.191
+L009,Akuafo Hall,Legon,Hostel,5.644,-0.188
+L010,Mensah Sarbah Hall,Legon,Hostel,5.646,-0.184
+L011,Legon Campus Clinic,Legon,Health,5.654,-0.186
+L012,UG Sports Stadium,Legon,Recreation,5.658,-0.188
+L013,UG School of Engineering,Legon,Academic,5.653,-0.181
+L014,UG School of Law,Legon,Academic,5.648,-0.180
+L015,UG School of Business,Legon,Academic,5.650,-0.183
+L016,UG Staff Village,Legon,House,5.659,-0.182
+L017,Legon Police Station,Legon,Security,5.660,-0.187
+L018,Legon Post Office,Legon,Office,5.652,-0.177
+L019,Atomic Energy Centre,Legon,Research,5.667,-0.180
+L020,Achimota School,Achimota,School,5.615,-0.221
+L021,Achimota Mall,Achimota,Shopping,5.609,-0.218
+L022,Achimota Market,Achimota,Market,5.604,-0.222
+L023,37 Military Hospital,Accra,Hospital,5.574,-0.170
+L024,University of Ghana Medical Centre,Legon,Hospital,5.656,-0.177
+L025,East Legon Hills School,East Legon,School,5.646,-0.161
+L026,East Legon Residential Area,East Legon,House,5.622,-0.161
+L027,American House,East Legon,Office,5.627,-0.166
+L028,Accra Mall,Spintex,Shopping,5.603,-0.174
+L029,Spintex Road Factory,Spintex,Factory,5.617,-0.165
+L030,Airport City Office,Airport,Office,5.605,-0.190
+L031,Kotoka International Airport,Airport,Transport,5.603,-0.171
+L032,Marina Mall,Airport,Shopping,5.608,-0.184
+L033,Osu Oxford Street,Osu,Market,5.556,-0.182
+L034,Osu Community School,Osu,School,5.554,-0.181
+L035,Osu Police Station,Osu,Security,5.558,-0.178
+L036,Labone Residential Area,Labone,House,5.565,-0.175
+L037,Cantonments Office Complex,Cantonments,Office,5.577,-0.174
+L038,Cantonments Residential Area,Cantonments,House,5.580,-0.176
+L039,Ridge Hospital,Ridge,Hospital,5.568,-0.193
+L040,Accra Central Market,Accra Central,Market,5.548,-0.206
+L041,Kaneshie Market,Kaneshie,Market,5.564,-0.234
+L042,Madina Market,Madina,Market,5.683,-0.167
+L043,Madina Social Welfare Centre,Madina,Office,5.680,-0.169
+L044,Adenta Community School,Adenta,School,5.708,-0.164
+L045,Adenta Residential Area,Adenta,House,5.711,-0.158
+L046,Tema Industrial Area,Tema,Industrial,5.690,-0.017
+L047,Tema General Hospital,Tema,Hospital,5.670,-0.016
+L048,Tema Community Market,Tema,Market,5.676,-0.011
+L049,Nungua Residential Area,Nungua,House,5.601,-0.068
+L050,Nungua Industrial Centre,Nungua,Factory,5.610,-0.067
+L051,Legon Botanical Gardens,Legon,Recreation,5.666,-0.184
+L052,UG Central Administration,Legon,Office,5.652,-0.191
+L053,UG School of Education,Legon,Academic,5.646,-0.181
+L054,UG School of Arts,Legon,Academic,5.649,-0.179
+L055,UG Night Market,Legon,Market,5.644,-0.182
+L056,Legon Township Market,Legon,Market,5.638,-0.186
+L057,Atomic Junction,Atomic,Transport,5.674,-0.176
+L058,Atomic Hills Residential Area,Atomic,House,5.671,-0.173
+L059,University Staff Club,Legon,Recreation,5.657,-0.181
+L060,UG Graduate School,Legon,Academic,5.651,-0.184
+L061,Okponglo Junction,Okponglo,Transport,5.635,-0.191
+L062,Okponglo Residential Area,Okponglo,House,5.632,-0.188
+L063,East Legon Executive Fitness Centre,East Legon,Recreation,5.638,-0.159
+L064,East Legon Hills Market,East Legon,Market,5.653,-0.157
+L065,American International School,East Legon,School,5.641,-0.166
+L066,East Legon Police Station,East Legon,Security,5.634,-0.164
+L067,Shiashie Market,Shiashie,Market,5.622,-0.178
+L068,Shiashie Residential Area,Shiashie,House,5.620,-0.181
+L069,Achimota Forest Reserve,Achimota,Recreation,5.618,-0.205
+L070,Achimota Transport Terminal,Achimota,Transport,5.611,-0.224
+L071,Achimota Residential Area,Achimota,House,5.608,-0.228
+L072,Achimota Police Station,Achimota,Security,5.612,-0.220
+L073,Abeka Market,Abeka,Market,5.585,-0.218
+L074,Abeka Residential Area,Abeka,House,5.581,-0.216
+L075,Abeka Lapaz Road Junction,Abeka,Transport,5.579,-0.225
+L076,Dansoman Market,Dansoman,Market,5.533,-0.252
+L077,Dansoman Residential Area,Dansoman,House,5.529,-0.255
+L078,Dansoman Police Station,Dansoman,Security,5.535,-0.248
+L079,Kaneshie Transport Terminal,Kaneshie,Transport,5.560,-0.229
+L080,Kaneshie Polyclinic,Kaneshie,Health,5.558,-0.231
+L081,Odorkor Market,Odorkor,Market,5.552,-0.244
+L082,Odorkor Residential Area,Odorkor,House,5.548,-0.241
+L083,Mataheko Market,Mataheko,Market,5.560,-0.211
+L084,Accra Central Post Office,Accra Central,Office,5.550,-0.202
+L085,Accra City Hall,Accra Central,Office,5.550,-0.207
+L086,Korle Bu Teaching Hospital,Korle Bu,Hospital,5.535,-0.226
+L087,Korle Bu Residential Area,Korle Bu,House,5.539,-0.221
+L088,James Town Market,James Town,Market,5.544,-0.213
+L089,Jamestown Police Station,James Town,Security,5.545,-0.211
+L090,Independence Square,Osu,Recreation,5.551,-0.187
+L091,Osu Castle,Osu,Government,5.550,-0.176
+L092,Osu Police Hospital,Osu,Hospital,5.558,-0.185
+L093,Labone Market,Labone,Market,5.562,-0.180
+L094,Cantonments Police Station,Cantonments,Security,5.578,-0.178
+L095,Cantonments Market,Cantonments,Market,5.581,-0.181
+L096,Teshie Market,Teshie,Market,5.583,-0.095
+L097,Teshie Residential Area,Teshie,House,5.585,-0.102
+L098,Nungua Market,Nungua,Market,5.598,-0.066
+L099,Nungua Police Station,Nungua,Security,5.604,-0.071
+L100,Spintex Community Hospital,Spintex,Hospital,5.613,-0.172
